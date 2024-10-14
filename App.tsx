@@ -1,118 +1,60 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import one from './src/assets/one.png'
+import two from './src/assets/two.png'
+import three from './src/assets/three.png'
+import four from './src/assets/four.png'
+import five from './src/assets/five.png'
+import six from './src/assets/six.png'
+import Dice from "./src/components/Dice";
+import React, { useState } from "react";
+import { trigger } from "react-native-haptic-feedback";
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+const options = {
+  enableVibrateFallback: true,
+  ignoreAndroidSystemSettings: false,
+};
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+function App(): React.JSX.Element {
+  const [diceimg, setDiceimg] = useState(one)
+  const handleChange=()=>{
+    const r=Math.floor(Math.random()*6)+1;
+    switch (r) {
+      case 1:
+        setDiceimg(one)
+        break;
+      case 2:
+        setDiceimg(two)
+        break;
+      case 3:
+        setDiceimg(three)
+        break;
+      case 4:
+        setDiceimg(four)
+        break;
+      case 5:
+        setDiceimg(five)
+        break;
+      case 6:
+        setDiceimg(six)
+        break;
+      default:
+        setDiceimg(one)
+        break;
+    }
+    trigger("impactHeavy", options);
+  }
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
+    <View className="h-screen justify-center items-center bg-black">
+      <Dice imageurl={diceimg}/>
+      <Pressable onPress={handleChange} className="bg-white rounded-lg mt-10" >
+      <Text className="text-black font-extrabold text-xl  px-6 py-1 ">ROLL</Text>
+      </Pressable>
     </View>
   );
 }
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-}
-
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
+  
 });
 
 export default App;
